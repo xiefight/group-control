@@ -1,0 +1,30 @@
+server:
+  port: 11000
+
+
+spring:
+  datasource:
+#    type: com.alibaba.druid.pool.DruidDataSource
+    #MySQL配置
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://39.96.179.255:3306/group?useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password: 123456
+
+mybatis-plus:
+  mapperLocations: classpath:mapper/**/*.xml
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
+pagehelper:
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+
+group:
+  thread:
+    coreSize: 20
+    maxSize: 200
+    keepAliveTime: 10
