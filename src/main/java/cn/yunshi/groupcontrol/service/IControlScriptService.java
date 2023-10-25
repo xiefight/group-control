@@ -27,7 +27,7 @@ public interface IControlScriptService {
     /**
      * 浏览逻辑
      */
-//    void browse();
+    boolean browse(GroupEventEntity groupEventEntity, String contentUrl) throws InterruptedException;
 
 
     /**

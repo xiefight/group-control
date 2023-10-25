@@ -165,7 +165,6 @@ public class GroupServiceImpl extends ServiceImpl<GroupTaskDao, GroupTaskEntity>
                     //状态执行中
                     groupEventEntity.setStatus(GroupTaskStatus.EXECUTE.getCode());
                     groupEventEntity.setTaskId(taskId);
-//                    groupEventEntity.setCommentText(taskBo.getCommentVo().getComment());
                     groupEventEntity.setAndroidId(androidId);
                     int eventId = groupEventDao.insert(groupEventEntity);
                     //执行事件
@@ -183,6 +182,46 @@ public class GroupServiceImpl extends ServiceImpl<GroupTaskDao, GroupTaskEntity>
                     cdl.countDown();
                 }, threadPoolExecutor);
             }
+            idx = nums;
+            System.out.println("点赞坐标 idx ：" + idx);
+        }
+        if (null != taskBo.getBrowseVo()) {
+            Integer nums = Optional.ofNullable(taskBo.getBrowseVo().getNums()).orElse(0);
+            for (int browse = 0; browse < nums; browse++) {
+
+                int finalBrowse = browse + idx;
+                IControlScriptService finalScriptService = scriptService;
+
+                CompletableFuture.runAsync(() -> {
+
+                    String androidId = androidIds.get(finalBrowse);
+                    System.out.println("浏览--androidId：" + androidId);
+
+                    //构建事件基础信息
+                    GroupEventEntity groupEventEntity = new GroupEventEntity();
+                    groupEventEntity.setEventType(ControlTypeEnum.BROWSE.getCode());
+                    //状态执行中
+                    groupEventEntity.setStatus(GroupTaskStatus.EXECUTE.getCode());
+                    groupEventEntity.setTaskId(taskId);
+                    groupEventEntity.setAndroidId(androidId);
+                    int eventId = groupEventDao.insert(groupEventEntity);
+                    //执行事件
+                    boolean browseRes = false;
+                    try {
+                        browseRes = finalScriptService.browse(groupEventEntity, groupTaskEntity.getContentUrl());
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    GroupEventEntity update = new GroupEventEntity();
+                    update.setId(groupEventEntity.getId());
+                    update.setStatus(browseRes ? GroupTaskStatus.SUCCESS.getCode() : GroupTaskStatus.FAIL.getCode());
+                    groupEventDao.updateById(update);
+
+                    cdl.countDown();
+                }, threadPoolExecutor);
+            }
+            idx = nums;
+            System.out.println("浏览坐标 idx ：" + idx);
         }
         cdl.await();
         System.out.println("所有事件执行完成");

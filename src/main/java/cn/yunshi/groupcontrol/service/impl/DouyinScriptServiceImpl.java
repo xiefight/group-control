@@ -120,4 +120,46 @@ public class DouyinScriptServiceImpl extends BaseScriptService {
         System.out.println(groupEventEntity.getAndroidId() + " 花费时间：" + (System.currentTimeMillis() - start));
         return true;
     }
+
+    @Override
+    public boolean browse(GroupEventEntity groupEventEntity, String contentUrl) throws InterruptedException {
+        long start = System.currentTimeMillis();
+
+        //1.点击home按钮到桌面
+        if (!click(new ClickVo(groupEventEntity.getAndroidId(), 543, 2157))) {
+            return false;
+        }
+
+        Thread.sleep(2000);
+
+        //2.点击抖音坐标
+        if (!click(new ClickVo(groupEventEntity.getAndroidId(), 141, 267))) {
+            return false;
+        }
+        Thread.sleep(2000);
+        //3.点击右上角搜索按钮，弹出搜索框
+        if (!click(new ClickVo(groupEventEntity.getAndroidId(), 1011, 117))) {
+            return false;
+        }
+        Thread.sleep(2000);
+        //4.将url复制到搜索框中
+        if (!copy(new CopyVo(groupEventEntity.getAndroidId(), contentUrl))) {
+            return false;
+        }
+        Thread.sleep(2000);
+        //5.并点击搜索
+        if (!click(new ClickVo(groupEventEntity.getAndroidId(), 966, 114))) {
+            return false;
+        }
+        Thread.sleep(10000);
+
+
+        //6.播放完成之后点击屏幕任意一处 暂停视频 判断任务完成
+        if (!click(new ClickVo(groupEventEntity.getAndroidId(), 453, 66))) {
+            return false;
+        }
+
+        System.out.println(groupEventEntity.getAndroidId() + " 花费时间：" + (System.currentTimeMillis() - start));
+        return true;
+    }
 }
