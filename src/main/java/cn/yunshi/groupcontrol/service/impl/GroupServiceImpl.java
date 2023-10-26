@@ -204,6 +204,7 @@ public class GroupServiceImpl extends ServiceImpl<GroupTaskDao, GroupTaskEntity>
                     groupEventEntity.setStatus(GroupTaskStatus.EXECUTE.getCode());
                     groupEventEntity.setTaskId(taskId);
                     groupEventEntity.setAndroidId(androidId);
+                    groupEventEntity.setBrowseTime(taskBo.getBrowseVo().getBrowseTime());
                     int eventId = groupEventDao.insert(groupEventEntity);
                     //执行事件
                     boolean browseRes = false;

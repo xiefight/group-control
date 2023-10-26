@@ -46,4 +46,9 @@ public class GroupEventEntity {
      * 评论内容（评论事件有）
      */
     private String commentText;
+
+    /**
+     * 视频停留时长（浏览事件有）
+     */
+    private Integer browseTime;
 }

@@ -313,7 +313,7 @@ public class WeixinVideoScriptServiceImpl extends BaseScriptService {
             return false;
         }
         System.out.println("8.打开链接");
-        Thread.sleep(10000);
+        Thread.sleep(groupEventEntity.getBrowseTime() * 1000);
 
         clear(groupEventEntity);
 
