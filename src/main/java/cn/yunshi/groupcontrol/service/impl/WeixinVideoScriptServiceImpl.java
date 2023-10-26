@@ -93,6 +93,9 @@ public class WeixinVideoScriptServiceImpl extends BaseScriptService {
         if (!click(new ClickVo(groupEventEntity.getAndroidId(), 51, 123))) {
             return false;
         }
+
+        clear(groupEventEntity);
+
         System.out.println("14.返回");
         Thread.sleep(4000);
         //15.返回
@@ -221,6 +224,8 @@ public class WeixinVideoScriptServiceImpl extends BaseScriptService {
         System.out.println("13.关闭评论弹窗");
         Thread.sleep(2000);
 
+        clear(groupEventEntity);
+
         //14.返回
         if (!click(new ClickVo(groupEventEntity.getAndroidId(), 51, 123))) {
             return false;
@@ -310,6 +315,8 @@ public class WeixinVideoScriptServiceImpl extends BaseScriptService {
         System.out.println("8.打开链接");
         Thread.sleep(10000);
 
+        clear(groupEventEntity);
+
 //14.返回
         if (!click(new ClickVo(groupEventEntity.getAndroidId(), 51, 123))) {
             return false;
@@ -328,5 +335,16 @@ public class WeixinVideoScriptServiceImpl extends BaseScriptService {
 
         System.out.println(groupEventEntity.getAndroidId() + " 花费时间：" + (System.currentTimeMillis() - start));
         return true;
+    }
+
+    private void clear(GroupEventEntity groupEventEntity){
+        //1.点击文件传输助手对话框右上角...
+        click(new ClickVo(groupEventEntity.getAndroidId(), 1005, 126));
+
+        //2.点击清空聊天记录
+        click(new ClickVo(groupEventEntity.getAndroidId(), 525, 1188));
+
+        //3.点击-弹窗清空选项
+        click(new ClickVo(groupEventEntity.getAndroidId(), 738, 1167));
     }
 }
