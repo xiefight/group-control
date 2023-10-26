@@ -23,6 +23,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang.StringUtils;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -54,6 +55,9 @@ public class GroupServiceImpl extends ServiceImpl<GroupTaskDao, GroupTaskEntity>
     @Autowired
     @Qualifier("weixinScriptService")
     private WeixinVideoScriptServiceImpl weixinScriptService;
+
+    @Autowired
+    private RedissonClient redissonClient;
 
 
     @Override
@@ -116,6 +120,8 @@ public class GroupServiceImpl extends ServiceImpl<GroupTaskDao, GroupTaskEntity>
                 int finalComment = comment;
                 IControlScriptService finalScriptService = scriptService;
                 CompletableFuture.runAsync(() -> {
+
+
 
                     String androidId = androidIds.get(finalComment);
                     System.out.println("评论--androidId：" + androidId);
