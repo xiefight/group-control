@@ -110,21 +110,17 @@ public class GroupServiceImpl extends ServiceImpl<GroupTaskDao, GroupTaskEntity>
 
         CountDownLatch cdl = new CountDownLatch(eventSums);
 
-        int idx = 0;
-        System.out.println("初始坐标 idx ：" + idx);
         //4.放入线程池，异步执行
         if (null != taskBo.getCommentVo()) {
             Integer nums = Optional.ofNullable(taskBo.getCommentVo().getNums()).orElse(0);
-            for (int comment = idx; comment < nums; comment++) {
+            for (int comment = 0; comment < nums; comment++) {
 
-                int finalComment = comment;
                 IControlScriptService finalScriptService = scriptService;
                 CompletableFuture.runAsync(() -> {
 
-
-
-                    String androidId = androidIds.get(finalComment);
-                    System.out.println("评论--androidId：" + androidId);
+                    String androidId = getAndroidLock(androidIds);
+                    System.out.println("评论事件 >> " + Thread.currentThread().getId() + " 获取到了锁：" + androidId);
+//                    System.out.println("评论--androidId：" + androidId);
 
                     //构建事件基础信息
                     GroupEventEntity groupEventEntity = new GroupEventEntity();
@@ -146,24 +142,22 @@ public class GroupServiceImpl extends ServiceImpl<GroupTaskDao, GroupTaskEntity>
                     update.setId(groupEventEntity.getId());
                     update.setStatus(commentRes ? GroupTaskStatus.SUCCESS.getCode() : GroupTaskStatus.FAIL.getCode());
                     groupEventDao.updateById(update);
-
+                    redissonClient.getLock(androidId).unlock();
                     cdl.countDown();
                 }, threadPoolExecutor);
             }
-            idx = nums;
-            System.out.println("评论坐标 idx ：" + idx);
         }
         if (null != taskBo.getSupportVo()) {
             Integer nums = Optional.ofNullable(taskBo.getSupportVo().getNums()).orElse(0);
             for (int support = 0; support < nums; support++) {
 
-                int finalSupport = support + idx;
                 IControlScriptService finalScriptService = scriptService;
 
                 CompletableFuture.runAsync(() -> {
 
-                    String androidId = androidIds.get(finalSupport);
-                    System.out.println("点赞--androidId：" + androidId);
+                    String androidId = getAndroidLock(androidIds);
+                    System.out.println("点赞事件 >> " + Thread.currentThread().getId() + " 获取到了锁：" + androidId);
+//                    System.out.println("点赞--androidId：" + androidId);
 
                     //构建事件基础信息
                     GroupEventEntity groupEventEntity = new GroupEventEntity();
@@ -185,23 +179,22 @@ public class GroupServiceImpl extends ServiceImpl<GroupTaskDao, GroupTaskEntity>
                     update.setStatus(supportRes ? GroupTaskStatus.SUCCESS.getCode() : GroupTaskStatus.FAIL.getCode());
                     groupEventDao.updateById(update);
 
+                    redissonClient.getLock(androidId).unlock();
                     cdl.countDown();
                 }, threadPoolExecutor);
             }
-            idx = nums;
-            System.out.println("点赞坐标 idx ：" + idx);
         }
         if (null != taskBo.getBrowseVo()) {
             Integer nums = Optional.ofNullable(taskBo.getBrowseVo().getNums()).orElse(0);
             for (int browse = 0; browse < nums; browse++) {
 
-                int finalBrowse = browse + idx;
                 IControlScriptService finalScriptService = scriptService;
 
                 CompletableFuture.runAsync(() -> {
 
-                    String androidId = androidIds.get(finalBrowse);
-                    System.out.println("浏览--androidId：" + androidId);
+                    String androidId = getAndroidLock(androidIds);
+                    System.out.println("浏览事件 >> " + Thread.currentThread().getId() + " 获取到了锁：" + androidId);
+//                    System.out.println("浏览--androidId：" + androidId);
 
                     //构建事件基础信息
                     GroupEventEntity groupEventEntity = new GroupEventEntity();
@@ -217,17 +210,18 @@ public class GroupServiceImpl extends ServiceImpl<GroupTaskDao, GroupTaskEntity>
                         browseRes = finalScriptService.browse(groupEventEntity, groupTaskEntity.getContentUrl());
                     } catch (InterruptedException e) {
                         e.printStackTrace();
+                    }finally {
+                        //redissonClient.getLock(androidId).unlock();
                     }
                     GroupEventEntity update = new GroupEventEntity();
                     update.setId(groupEventEntity.getId());
                     update.setStatus(browseRes ? GroupTaskStatus.SUCCESS.getCode() : GroupTaskStatus.FAIL.getCode());
                     groupEventDao.updateById(update);
 
+                    redissonClient.getLock(androidId).unlock();
                     cdl.countDown();
                 }, threadPoolExecutor);
             }
-            idx = nums;
-            System.out.println("浏览坐标 idx ：" + idx);
         }
         cdl.await();
         System.out.println("所有事件执行完成");
@@ -281,6 +275,24 @@ public class GroupServiceImpl extends ServiceImpl<GroupTaskDao, GroupTaskEntity>
         }).collect(Collectors.toList());
         page.setRecords(tasks);
         return BasicResult.getSuccessResponse(new PageUtils(page));
+    }
+
+    private String getAndroidLock(List<String> androidIds) {
+        //获取一个设备的锁
+        int size = androidIds.size();
+        for (int i = 0; i < size; i++) {
+            String androidId = androidIds.get(i);
+            //获取到了锁，就不再往后找了
+            //获取不到锁，就一直往后找，直到找到锁或者集合遍历完
+            if (redissonClient.getLock(androidId).tryLock()) {
+                return androidId;
+            }
+            //一轮没找到就重复遍历，直到找到为止
+            if (i == size - 1) {
+                return getAndroidLock(androidIds);
+            }
+        }
+        return null;
     }
 
 }
