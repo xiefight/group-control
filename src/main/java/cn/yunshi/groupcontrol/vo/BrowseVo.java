@@ -27,6 +27,13 @@ public class BrowseVo {
     private Integer nums;
 
     /**
+     * 停留时长：秒
+     */
+    @Getter
+    @Setter
+    private Integer browseTime;
+
+    /**
      * 间隔时间
      */
     @Getter

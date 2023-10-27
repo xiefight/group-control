@@ -151,7 +151,7 @@ public class DouyinScriptServiceImpl extends BaseScriptService {
         if (!click(new ClickVo(groupEventEntity.getAndroidId(), 966, 114))) {
             return false;
         }
-        Thread.sleep(10000);
+        Thread.sleep(groupEventEntity.getBrowseTime() * 1000);
 
 
         //6.播放完成之后点击屏幕任意一处 暂停视频 判断任务完成
