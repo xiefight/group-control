@@ -11,7 +11,7 @@ import java.util.Map;
  * @Author: xietao
  * @Date: 2023-10-18 15:34
  **/
-public interface IGroupService {
+public interface IGroupWebService {
     Response reportTask(Map<String, Object> param) throws InterruptedException;
 
     Response listTask(GroupTaskReqVo groupTaskReqVo) throws InputErrorException;

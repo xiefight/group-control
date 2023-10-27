@@ -4,7 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.yunshi.groupcontrol.bo.UserBo;
 import cn.yunshi.groupcontrol.common.Response;
 import cn.yunshi.groupcontrol.service.IControlScriptService;
-import cn.yunshi.groupcontrol.service.IGroupService;
+import cn.yunshi.groupcontrol.service.IGroupWebService;
 import cn.yunshi.groupcontrol.util.JsonParameterUtil;
 import cn.yunshi.groupcontrol.vo.GroupTaskReqVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +21,10 @@ import java.util.Map;
  **/
 @RestController
 @RequestMapping("group")
-public class GroupController {
+public class GroupWebController {
 
     @Autowired
-    private IGroupService groupService;
+    private IGroupWebService groupService;
 
     @Autowired
     private IControlScriptService scriptService;

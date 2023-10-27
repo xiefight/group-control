@@ -1,7 +1,5 @@
 package cn.yunshi.groupcontrol.service;
 
-import cn.yunshi.groupcontrol.entity.GroupEventEntity;
-
 import java.util.List;
 
 /**
@@ -16,18 +14,18 @@ public interface IControlScriptService {
     /**
      * 点赞逻辑
      */
-    boolean support(GroupEventEntity groupEventEntity, String contentUrl) throws InterruptedException;
+    boolean support(String androidId, String contentUrl) throws InterruptedException;
 
     /**
      * 评论逻辑
      */
-    boolean comment(GroupEventEntity groupEventEntity, String contentUrl) throws InterruptedException;
+    boolean comment(String androidId, String contentUrl, String commentText) throws InterruptedException;
 
 
     /**
      * 浏览逻辑
      */
-    boolean browse(GroupEventEntity groupEventEntity, String contentUrl) throws InterruptedException;
+    boolean browse(String androidId, String contentUrl, Integer browseTime) throws InterruptedException;
 
 
     /**
