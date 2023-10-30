@@ -17,6 +17,12 @@ public class CommonUtil {
     @Autowired
     private RedissonClient redissonClient;
 
+    /**
+     * 获取设备锁
+     *
+     * @param androidIds 要遍历的设备集合
+     * @return
+     */
     public String getAndroidLock(List<String> androidIds) {
         //获取一个设备的锁
         int size = androidIds.size();

@@ -28,3 +28,16 @@ create table groupEvent
         foreign key (task_id) references groupTask (id)
 )
     comment '每个任务下包含的事件详情';
+
+
+# 点赞记录表
+create table supportRecord
+(
+    id          int auto_increment comment '主键id',
+    android_id  varchar(30)   not null comment '点赞设备id',
+    content_url varchar(1000) not null comment '点赞的视频路径',
+    content_md5 varchar(32)   not null comment '视频路径的md5值',
+    constraint support_record_pk
+        primary key (id)
+)
+    comment '点赞记录表';

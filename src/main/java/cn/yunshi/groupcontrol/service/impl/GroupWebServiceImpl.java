@@ -1,6 +1,7 @@
 package cn.yunshi.groupcontrol.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
 import cn.yunshi.groupcontrol.bo.TaskBo;
 import cn.yunshi.groupcontrol.business.BrowseEventOperate;
 import cn.yunshi.groupcontrol.business.CommentEventOperate;
@@ -90,18 +91,19 @@ public class GroupWebServiceImpl extends ServiceImpl<GroupTaskDao, GroupTaskEnti
         groupTaskEntity.setContentUrl(taskBo.getContentUrl());
         groupTaskEntity.setPlatform(taskBo.getPlatform());
         //状态执行中--等后续使用消息队列，完全异步时，再设置初始状态，等消费者领到任务后置为执行状态
-        groupTaskEntity.setStatus(GroupTaskStatus.EXECUTE.getCode());
+        groupTaskEntity.setStatus(CollUtil.isEmpty(androidIds) ? GroupTaskStatus.FAIL.getCode() : GroupTaskStatus.EXECUTE.getCode());
         groupTaskEntity.setCreateTime(new Date());
         groupTaskEntity.setUpdateTime(new Date());
         groupTaskEntity.setUserId("1001");
         groupTaskEntity.setUserName("test");
+        groupTaskEntity.setErrMsg(CollUtil.isEmpty(androidIds) ? "无可用设备" : "");
         this.baseMapper.insert(groupTaskEntity);
         Integer taskId = groupTaskEntity.getId();
 
         IControlScriptService finalScriptService = scriptService;
         CompletableFuture.runAsync(() -> {
             try {
-                asyncExeEvents(taskBo, groupTaskEntity, taskId, finalScriptService, androidIds, eventSums);
+                asyncExeEvents(taskBo, taskId, finalScriptService, androidIds, eventSums);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -110,8 +112,9 @@ public class GroupWebServiceImpl extends ServiceImpl<GroupTaskDao, GroupTaskEnti
         return BasicResult.getSuccessResponse(taskId);
     }
 
-    private void asyncExeEvents(TaskBo taskBo, GroupTaskEntity groupTaskEntity, Integer taskId,
-                                IControlScriptService scriptService, List<String> androidIds, int eventSums) throws InterruptedException {
+    private void asyncExeEvents(TaskBo taskBo, Integer taskId,
+                                IControlScriptService scriptService,
+                                List<String> androidIds, int eventSums) throws InterruptedException {
 
 
         CountDownLatch cdl = new CountDownLatch(eventSums);

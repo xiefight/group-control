@@ -1,5 +1,6 @@
 package cn.yunshi.groupcontrol.service;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpStatus;
@@ -35,7 +36,7 @@ public abstract class BaseScriptService implements IControlScriptService {
         } else {
             System.out.println("获取ids失败");
         }
-        return androidBotIdsArr;
+        return CollUtil.isEmpty(androidBotIdsArr) ? new ArrayList<>() : androidBotIdsArr;
     }
 
     /**

@@ -9,7 +9,6 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * @Description: 任务
@@ -59,6 +58,9 @@ public class GroupTaskEntity {
 
     //更新时间
     private Date updateTime;
+
+    //失败原因
+    private String errMsg;
 
     //关联的事件集合
     @TableField(exist = false)

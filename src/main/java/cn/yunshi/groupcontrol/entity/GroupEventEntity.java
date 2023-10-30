@@ -51,4 +51,9 @@ public class GroupEventEntity {
      * 视频停留时长（浏览事件有）
      */
     private Integer browseTime;
+
+    /**
+     * 失败原因
+     */
+    private String errMsg;
 }
