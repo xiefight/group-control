@@ -33,8 +33,11 @@ public class SupportEventOperate extends BaseOperate {
     @Autowired
     private SupportRecordDao supportRecordDao;
 
+    public static ThreadLocal<String> contentUrlMap = new ThreadLocal<>();
+
     @Override
     protected GroupEventEntity saveGroupEvent(Integer taskId, TaskBo taskBo) {
+        contentUrlMap.set(taskBo.getContentUrl());
         //构建事件基础信息
         GroupEventEntity groupEventEntity = new GroupEventEntity();
         groupEventEntity.setEventType(ControlTypeEnum.SUPPORT.getCode());
@@ -71,6 +74,31 @@ public class SupportEventOperate extends BaseOperate {
     }
 
     /**
+     * @param androidIds 已经排除过一次点赞设备了，这里重写获取锁操作，是在获取到锁之后，还要判断当前锁（androidId）是否被别的点赞（线程）使用了
+     * @return
+     */
+    @Override
+    protected String getAndroidLock(List<String> androidIds) {
+        //先获取一个
+        String androidId = super.getAndroidLock(androidIds);
+        //从数据库中查找已点过赞的设备
+        List<String> usedAndroidIds = usedAndroidIds();
+        //包含就说明当前获取的锁已经被用了，要剔除掉，重新获取
+        if (usedAndroidIds.contains(androidId)) {
+            //将此设备剔除
+            androidIds.remove(androidId);
+            List<String> usableAndroidIds = new ArrayList<>(androidIds);
+            if (CollUtil.isEmpty(usableAndroidIds)) {
+                //剔除后的设备集合为空，说明没有可用设备了，返回失败提示
+                return null;
+            }
+            return this.getAndroidLock(usableAndroidIds);
+        }
+        //否则就返回该设备锁
+        return androidId;
+    }
+
+    /**
      * 点赞事件剔除已点过赞的设备
      *
      * @param contentUrl 点赞的视频url
@@ -81,15 +109,21 @@ public class SupportEventOperate extends BaseOperate {
     protected List<String> excludeAndroidIds(String contentUrl, List<String> androidIds) {
         List<String> allAndroidIds = new ArrayList<>(androidIds);
         //1.从数据库中查找已点过赞的设备
-        QueryWrapper<SupportRecordEntity> qw = new QueryWrapper();
-        qw.eq("content_md5", MD5.create().digestHex16(contentUrl));
-        List<SupportRecordEntity> supportRecordEntities = supportRecordDao.selectList(qw);
-        if (CollUtil.isEmpty(supportRecordEntities)){
-            return allAndroidIds;
-        }
-        List<String> usedAndroidIds = supportRecordEntities.stream().map(supportRecordEntity -> supportRecordEntity.getAndroidId()).collect(Collectors.toList());
+        List<String> usedAndroidIds = usedAndroidIds();
         //所有的设备和已使用的设备去重
         allAndroidIds.removeAll(usedAndroidIds);
         return allAndroidIds;
+    }
+
+    private List<String> usedAndroidIds() {
+        List<String> usedAndroidIds = new ArrayList<>();
+        QueryWrapper<SupportRecordEntity> qw = new QueryWrapper();
+//        System.out.println("线程==> " + Thread.currentThread().getId() + "  contentUrl==>" + contentUrlMap.get());
+        qw.eq("content_md5", MD5.create().digestHex16(contentUrlMap.get()));
+        List<SupportRecordEntity> supportRecordEntities = supportRecordDao.selectList(qw);
+        if (CollUtil.isEmpty(supportRecordEntities)) {
+            return usedAndroidIds;
+        }
+        return supportRecordEntities.stream().map(supportRecordEntity -> supportRecordEntity.getAndroidId()).collect(Collectors.toList());
     }
 }

@@ -7,6 +7,7 @@ import cn.yunshi.groupcontrol.dao.GroupEventDao;
 import cn.yunshi.groupcontrol.entity.GroupEventEntity;
 import cn.yunshi.groupcontrol.service.IControlScriptService;
 import cn.yunshi.groupcontrol.util.CommonUtil;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -34,7 +35,12 @@ public abstract class BaseOperate {
             return;
         }
         //2.2获取锁
-        String androidId = commonUtil.getAndroidLock(androidIds);
+        String androidId = getAndroidLock(androidIds);
+        if (StringUtils.isEmpty(androidId)) {
+            //点赞会出现设备锁越来越少的情况，评论等不会，所以这个判断是针对点赞的
+            updateEvent(groupEventEntity, "", false, "无可用设备");
+            return;
+        }
         //3.执行事件
         boolean eventRes = executeEvent(scriptService, groupEventEntity, taskBo.getContentUrl(), androidId);
         //4.更新事件状态
@@ -60,5 +66,19 @@ public abstract class BaseOperate {
                                             String contentUrl, String androidId);
 
     protected abstract GroupEventEntity saveGroupEvent(Integer taskId, TaskBo taskBo);
+
+    protected String getAndroidLock(List<String> androidIds) {
+        String androidId = commonUtil.getAndroidLock(androidIds);
+        //一轮没找到就重复遍历，直到找到为止
+        if (StringUtils.isEmpty(androidId)) {
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return this.getAndroidLock(androidIds);
+        }
+        return androidId;
+    }
 
 }
