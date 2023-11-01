@@ -28,6 +28,11 @@ public class ScriptConstant {
      */
     public static final String COPY_FILE_URL = "setText";
 
+    /**
+     * 向上滑动
+     */
+    public static final String SWIPE_UP = "swipeUp";
+
 
 
 }

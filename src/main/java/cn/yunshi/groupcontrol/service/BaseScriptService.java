@@ -5,8 +5,9 @@ import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpStatus;
 import cn.yunshi.groupcontrol.common.ScriptConstant;
-import cn.yunshi.groupcontrol.vo.ClickVo;
-import cn.yunshi.groupcontrol.vo.CopyVo;
+import cn.yunshi.groupcontrol.vo.action.ClickVo;
+import cn.yunshi.groupcontrol.vo.action.CopyVo;
+import cn.yunshi.groupcontrol.vo.action.SwipeVo;
 import com.alibaba.fastjson.JSONObject;
 
 import java.util.ArrayList;
@@ -70,6 +71,26 @@ public abstract class BaseScriptService implements IControlScriptService {
             JSONObject json = new JSONObject();
             json.put("id", copyVo.getId());
             json.put("text", copyVo.getText());
+            HttpResponse response = HttpRequest.post(url).body(json.toJSONString()).execute();
+            if (HttpStatus.HTTP_OK != response.getStatus()) {
+                return false;
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
+
+    /**
+     * 向上滑动方法
+     */
+    public boolean swipeUp(SwipeVo swipeVo) {
+        String url = ScriptConstant.NODE_SCRIPT_PATH + ScriptConstant.SWIPE_UP;
+        //http请求
+        try {
+            JSONObject json = new JSONObject();
+            json.put("id", swipeVo.getId());
             HttpResponse response = HttpRequest.post(url).body(json.toJSONString()).execute();
             if (HttpStatus.HTTP_OK != response.getStatus()) {
                 return false;

@@ -1,4 +1,4 @@
-package cn.yunshi.groupcontrol.vo;
+package cn.yunshi.groupcontrol.vo.action;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

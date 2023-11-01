@@ -1,8 +1,8 @@
 package cn.yunshi.groupcontrol.service.impl;
 
 import cn.yunshi.groupcontrol.service.BaseScriptService;
-import cn.yunshi.groupcontrol.vo.ClickVo;
-import cn.yunshi.groupcontrol.vo.CopyVo;
+import cn.yunshi.groupcontrol.vo.action.ClickVo;
+import cn.yunshi.groupcontrol.vo.action.CopyVo;
 import org.springframework.stereotype.Service;
 
 /**
