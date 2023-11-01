@@ -53,6 +53,21 @@ public class GroupEventEntity {
     private Integer browseTime;
 
     /**
+     * 视频号-名字全称
+     */
+    private String weixinVideoName;
+
+    /**
+     * 视频号-视频序列号
+     */
+    private Integer weixinVideoSort;
+
+    /**
+     * 转发人名称
+     */
+    private String forwardFriendName;
+
+    /**
      * 失败原因
      */
     private String errMsg;

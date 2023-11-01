@@ -28,6 +28,13 @@ public class ForwardVo {
     private Integer nums;
 
     /**
+     * 转发好友名称
+     */
+    @Getter
+    @Setter
+    private String friendName;
+
+    /**
      * 间隔时间
      */
     @Getter

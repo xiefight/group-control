@@ -36,7 +36,7 @@ public interface IControlScriptService {
     /**
      * 转发逻辑
      */
-    boolean forward(String androidId, String contentUrl) throws InterruptedException;
+    boolean forward(String androidId, String contentUrl, String forwardFriendName) throws InterruptedException;
 
 
     /**

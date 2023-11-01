@@ -32,12 +32,11 @@ public class BrowseEventOperate extends BaseOperate {
 
     @Override
     protected boolean executeEvent(IControlScriptService scriptService,
-                                   GroupEventEntity groupEventEntity,
-                                   String contentUrl, String androidId) {
+                                   GroupEventEntity groupEventEntity, String androidId) {
         //执行事件
         boolean browseRes = false;
         try {
-            browseRes = scriptService.browse(androidId, contentUrl, groupEventEntity.getBrowseTime());
+            browseRes = scriptService.browse(androidId, contentUrlMap.get(), groupEventEntity.getBrowseTime());
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {

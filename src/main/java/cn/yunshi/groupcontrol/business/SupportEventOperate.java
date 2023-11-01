@@ -33,11 +33,10 @@ public class SupportEventOperate extends BaseOperate {
     @Autowired
     private SupportRecordDao supportRecordDao;
 
-    public static ThreadLocal<String> contentUrlMap = new ThreadLocal<>();
 
     @Override
     protected GroupEventEntity saveGroupEvent(Integer taskId, TaskBo taskBo) {
-        contentUrlMap.set(taskBo.getContentUrl());
+
         //构建事件基础信息
         GroupEventEntity groupEventEntity = new GroupEventEntity();
         groupEventEntity.setEventType(ControlTypeEnum.SUPPORT.getCode());
@@ -50,18 +49,17 @@ public class SupportEventOperate extends BaseOperate {
 
     @Override
     protected boolean executeEvent(IControlScriptService scriptService,
-                                   GroupEventEntity groupEventEntity,
-                                   String contentUrl, String androidId) {
+                                   GroupEventEntity groupEventEntity, String androidId) {
         //执行事件
         boolean supportRes = false;
         try {
-            supportRes = scriptService.support(androidId, contentUrl);
+            supportRes = scriptService.support(androidId, contentUrlMap.get());
             //点赞成功后，记录点赞信息
             if (supportRes) {
                 SupportRecordEntity supportRecord = new SupportRecordEntity();
                 supportRecord.setAndroidId(androidId);
-                supportRecord.setContentUrl(contentUrl);
-                supportRecord.setContentMd5(MD5.create().digestHex16(contentUrl));
+                supportRecord.setContentUrl(contentUrlMap.get());
+                supportRecord.setContentMd5(MD5.create().digestHex16(contentUrlMap.get()));
                 supportRecordDao.insert(supportRecord);
             }
         } catch (InterruptedException e) {
@@ -101,12 +99,12 @@ public class SupportEventOperate extends BaseOperate {
     /**
      * 点赞事件剔除已点过赞的设备
      *
-     * @param contentUrl 点赞的视频url
+//     * @param contentUrl 点赞的视频url
      * @param androidIds 设备集合
      * @return 可以点赞的设备id
      */
     @Override
-    protected List<String> excludeAndroidIds(String contentUrl, List<String> androidIds) {
+    protected List<String> excludeAndroidIds(List<String> androidIds) {
         List<String> allAndroidIds = new ArrayList<>(androidIds);
         //1.从数据库中查找已点过赞的设备
         List<String> usedAndroidIds = usedAndroidIds();

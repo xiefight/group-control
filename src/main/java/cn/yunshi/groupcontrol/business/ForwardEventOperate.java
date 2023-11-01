@@ -31,12 +31,11 @@ public class ForwardEventOperate extends BaseOperate {
 
     @Override
     protected boolean executeEvent(IControlScriptService scriptService,
-                                   GroupEventEntity groupEventEntity,
-                                   String contentUrl, String androidId) {
+                                   GroupEventEntity groupEventEntity, String androidId) {
         //执行事件
         boolean forwardRes = false;
         try {
-            forwardRes = scriptService.forward(androidId, contentUrl);
+            forwardRes = scriptService.forward(androidId, contentUrlMap.get(), groupEventEntity.getForwardFriendName());
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {

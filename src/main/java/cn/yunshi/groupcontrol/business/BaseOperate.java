@@ -19,6 +19,8 @@ import java.util.List;
  **/
 public abstract class BaseOperate {
 
+    public static ThreadLocal<String> contentUrlMap = new ThreadLocal<>();
+
     @Autowired
     protected CommonUtil commonUtil;
     @Autowired
@@ -26,10 +28,11 @@ public abstract class BaseOperate {
 
     public void reportFlow(Integer taskId, List<String> androidIds,
                            TaskBo taskBo, IControlScriptService scriptService) {
+        contentUrlMap.set(taskBo.getContentUrl());
         //1.构建事件基础信息
         GroupEventEntity groupEventEntity = saveGroupEvent(taskId, taskBo);
         //2.1点赞事件需要先排除已点过赞的设备id
-        androidIds = excludeAndroidIds(taskBo.getContentUrl(), androidIds);
+        androidIds = excludeAndroidIds(androidIds);
         if (CollUtil.isEmpty(androidIds)) {
             updateEvent(groupEventEntity, "", false, "无可用设备");
             return;
@@ -42,7 +45,7 @@ public abstract class BaseOperate {
             return;
         }
         //3.执行事件
-        boolean eventRes = executeEvent(scriptService, groupEventEntity, taskBo.getContentUrl(), androidId);
+        boolean eventRes = executeEvent(scriptService, groupEventEntity, androidId);
         //4.更新事件状态
         updateEvent(groupEventEntity, androidId, eventRes, "");
     }
@@ -57,13 +60,12 @@ public abstract class BaseOperate {
 
     }
 
-    protected List<String> excludeAndroidIds(String contentUrl, List<String> androidIds) {
+    protected List<String> excludeAndroidIds(List<String> androidIds) {
         return androidIds;
     }
 
     protected abstract boolean executeEvent(IControlScriptService scriptService,
-                                            GroupEventEntity groupEventEntity,
-                                            String contentUrl, String androidId);
+                                            GroupEventEntity groupEventEntity, String androidId);
 
     protected abstract GroupEventEntity saveGroupEvent(Integer taskId, TaskBo taskBo);
 

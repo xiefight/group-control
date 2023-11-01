@@ -223,7 +223,52 @@ public class WeixinVideoScriptServiceImpl extends BaseScriptService {
     }
 
     @Override
-    public boolean forward(String androidId, String contentUrl) throws InterruptedException {
+    public boolean forward(String androidId, String contentUrl, String forwardFriendName) throws InterruptedException {
+
+        long start = System.currentTimeMillis();
+
+        this.openAppFindVideo(androidId, contentUrl);
+
+        Thread.sleep(5000);
+
+        //点击-转发图标
+        if (!click(new ClickVo(androidId, 744, 1926))) {
+            return false;
+        }
+        Thread.sleep(2000);
+
+        //点击-转发给好友
+        if (!click(new ClickVo(androidId, 81, 1461))) {
+            return false;
+        }
+        Thread.sleep(2000);
+
+        //点击输入框
+        if (!click(new ClickVo(androidId, 375, 249))) {
+            return false;
+        }
+        Thread.sleep(2000);
+
+        //搜索框输入自己微信名
+        if (!copy(new CopyVo(androidId, forwardFriendName))) {
+            return false;
+        }
+        Thread.sleep(2000);
+
+        //点击搜索出来的自己的头像-位置
+        if (!click(new ClickVo(androidId, 75, 288))) {
+            return false;
+        }
+        Thread.sleep(2000);
+
+        //点击弹窗的发送按钮
+        if (!click(new ClickVo(androidId, 756, 1518))) {
+            return false;
+        }
+        Thread.sleep(5000);
+
+        //todo 返回等操作  待完善
+
         return false;
     }
 

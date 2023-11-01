@@ -76,6 +76,14 @@ public class GroupWebServiceImpl extends ServiceImpl<GroupTaskDao, GroupTaskEnti
         TaskBo taskBo = new TaskBo();
         BeanUtil.fillBeanWithMap(param, taskBo, true);
 
+        //2.校验
+        if (taskBo.getSearchMethod().equals("2")) {
+            if (Objects.isNull(taskBo.getWeixinExtraVo())
+                    || StringUtils.isEmpty(taskBo.getWeixinExtraVo().getWeixinVideoName())) {
+                return BasicResult.getFailResponse("视频号名字全称方式搜索，缺少必要的字段");
+            }
+        }
+
         IControlScriptService scriptService = weixinScriptService;
         if (Constant.PlatForm.DOUYIN.equals(taskBo.getPlatform())) {
             scriptService = douyinScriptService;

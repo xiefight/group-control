@@ -32,12 +32,11 @@ public class CommentEventOperate extends BaseOperate {
 
     @Override
     protected boolean executeEvent(IControlScriptService scriptService,
-                                   GroupEventEntity groupEventEntity,
-                                   String contentUrl, String androidId) {
+                                   GroupEventEntity groupEventEntity, String androidId) {
         //执行事件
         boolean commentRes = false;
         try {
-            commentRes = scriptService.comment(androidId, contentUrl, groupEventEntity.getCommentText());
+            commentRes = scriptService.comment(androidId, contentUrlMap.get(), groupEventEntity.getCommentText());
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {

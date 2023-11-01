@@ -1,5 +1,6 @@
 package cn.yunshi.groupcontrol.bo;
 
+import cn.yunshi.groupcontrol.vo.WeixinExtraVo;
 import cn.yunshi.groupcontrol.vo.event.BrowseVo;
 import cn.yunshi.groupcontrol.vo.event.CommentVo;
 import cn.yunshi.groupcontrol.vo.event.ForwardVo;
@@ -20,6 +21,8 @@ public class TaskBo {
     private String platform;
     //群控内容url
     private String contentUrl;
+    //微信视频号搜索方式 1：视频链接 默认方式  2：视频号名字全称
+    private String searchMethod;
     //评论事件
     private CommentVo commentVo;
     //点赞事件
@@ -28,6 +31,9 @@ public class TaskBo {
     private BrowseVo browseVo;
     //转发事件
     private ForwardVo forwardVo;
+
+    //微信视频号-视频号名字全称-搜索视频 额外参数
+    private WeixinExtraVo weixinExtraVo;
 
     /**
      * 获取事件总数

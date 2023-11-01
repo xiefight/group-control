@@ -130,7 +130,7 @@ public class DouyinScriptServiceImpl extends BaseScriptService {
     }
 
     @Override
-    public boolean forward(String androidId, String contentUrl) throws InterruptedException {
+    public boolean forward(String androidId, String contentUrl, String forwardFriendName) throws InterruptedException {
         long start = System.currentTimeMillis();
 
         this.openAppFindVideo(androidId, contentUrl);
