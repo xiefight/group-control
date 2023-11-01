@@ -1,4 +1,4 @@
-package cn.yunshi.groupcontrol.vo;
+package cn.yunshi.groupcontrol.vo.event;
 
 import cn.yunshi.groupcontrol.enums.ControlTypeEnum;
 import lombok.Getter;
@@ -6,18 +6,18 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * @Description: 点赞vo
+ * @Description: 评论vo
  * @Author: xietao
- * @Date: 2023-10-18 14:05
+ * @Date: 2023-10-18 14:07
  **/
 @ToString
-public class SupportVo {
+public class CommentVo {
 
     /**
      * 群控类型
      */
     @Getter
-    private Integer eventType = ControlTypeEnum.SUPPORT.getCode();
+    private Integer eventType = ControlTypeEnum.COMMENT.getCode();
 
     /**
      * 数量
@@ -27,10 +27,18 @@ public class SupportVo {
     private Integer nums;
 
     /**
-     * 间隔时间
+     * 评论内容
+     */
+    @Getter
+    @Setter
+    private String comment;
+
+    /**
+     * 评论间隔时间
      */
     @Getter
     @Setter
     private Integer interval;
+
 
 }

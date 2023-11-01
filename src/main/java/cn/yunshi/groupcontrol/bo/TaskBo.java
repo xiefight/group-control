@@ -1,8 +1,9 @@
 package cn.yunshi.groupcontrol.bo;
 
-import cn.yunshi.groupcontrol.vo.BrowseVo;
-import cn.yunshi.groupcontrol.vo.CommentVo;
-import cn.yunshi.groupcontrol.vo.SupportVo;
+import cn.yunshi.groupcontrol.vo.event.BrowseVo;
+import cn.yunshi.groupcontrol.vo.event.CommentVo;
+import cn.yunshi.groupcontrol.vo.event.ForwardVo;
+import cn.yunshi.groupcontrol.vo.event.SupportVo;
 import lombok.Data;
 
 import java.util.Optional;
@@ -25,6 +26,8 @@ public class TaskBo {
     private SupportVo supportVo;
     //浏览事件
     private BrowseVo browseVo;
+    //转发事件
+    private ForwardVo forwardVo;
 
     /**
      * 获取事件总数
@@ -34,6 +37,7 @@ public class TaskBo {
         SupportVo supportVo = this.getSupportVo();
         CommentVo commentVo = this.getCommentVo();
         BrowseVo browseVo = this.getBrowseVo();
+        ForwardVo forwardVo = this.getForwardVo();
 
         if (supportVo != null) {
             sums += Optional.ofNullable(supportVo.getNums()).orElse(0);
@@ -43,6 +47,9 @@ public class TaskBo {
         }
         if (browseVo != null) {
             sums += Optional.ofNullable(browseVo.getNums()).orElse(0);
+        }
+        if (forwardVo != null) {
+            sums += Optional.ofNullable(forwardVo.getNums()).orElse(0);
         }
         return sums;
     }

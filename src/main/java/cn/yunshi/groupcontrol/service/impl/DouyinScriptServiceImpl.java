@@ -60,6 +60,9 @@ public class DouyinScriptServiceImpl extends BaseScriptService {
             return false;
         }
 
+        Thread.sleep(3000);
+
+        back(androidId);
         System.out.println(androidId + "点赞 花费时间：" + (System.currentTimeMillis() - start));
         return true;
     }
@@ -99,6 +102,8 @@ public class DouyinScriptServiceImpl extends BaseScriptService {
         if (!click(new ClickVo(androidId, 453, 66))) {
             return false;
         }
+        Thread.sleep(3000);
+        back(androidId);
         System.out.println(androidId + "评论 花费时间：" + (System.currentTimeMillis() - start));
 
         return true;
@@ -117,7 +122,68 @@ public class DouyinScriptServiceImpl extends BaseScriptService {
             return false;
         }
 
+        back(androidId);
+
         System.out.println(androidId + "浏览 花费时间：" + (System.currentTimeMillis() - start));
+
+        return true;
+    }
+
+    @Override
+    public boolean forward(String androidId, String contentUrl) throws InterruptedException {
+        long start = System.currentTimeMillis();
+
+        this.openAppFindVideo(androidId, contentUrl);
+        Thread.sleep(5000);
+
+        //点击转发图标按钮
+        if (!click(new ClickVo(androidId, 1002, 1500))) {
+            return false;
+        }
+
+        Thread.sleep(3000);
+
+        //点击-转发黄色按钮
+        if (!click(new ClickVo(androidId, 114, 1665))) {
+            return false;
+        }
+
+        Thread.sleep(3000);
+
+        //点击-转发日常按钮
+        if (!click(new ClickVo(androidId, 632, 2007))) {
+            return false;
+        }
+
+//        back(androidId);
+
+        System.out.println(androidId + "转发 花费时间：" + (System.currentTimeMillis() - start));
+
+        return true;
+    }
+
+
+    /**
+     * 返回
+     */
+    private boolean back(String androidId) throws InterruptedException {
+        if (!click(new ClickVo(androidId, 66, 120))) {
+            return false;
+        }
+
+        Thread.sleep(3000);
+
+        if (!click(new ClickVo(androidId, 66, 120))) {
+            return false;
+        }
+
+        Thread.sleep(3000);
+
+        if (!click(new ClickVo(androidId, 66, 120))) {
+            return false;
+        }
+
+        Thread.sleep(3000);
 
         return true;
     }

@@ -202,7 +202,7 @@ public class WeixinVideoScriptServiceImpl extends BaseScriptService {
 
         clear(androidId);
 
-//14.返回
+        //14.返回
         if (!click(new ClickVo(androidId, 51, 123))) {
             return false;
         }
@@ -220,6 +220,11 @@ public class WeixinVideoScriptServiceImpl extends BaseScriptService {
 
         System.out.println(androidId + " 花费时间：" + (System.currentTimeMillis() - start));
         return true;
+    }
+
+    @Override
+    public boolean forward(String androidId, String contentUrl) throws InterruptedException {
+        return false;
     }
 
     private void clear(String androidId) {

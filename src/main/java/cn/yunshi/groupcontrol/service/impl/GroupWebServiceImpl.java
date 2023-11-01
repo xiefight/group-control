@@ -5,6 +5,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.yunshi.groupcontrol.bo.TaskBo;
 import cn.yunshi.groupcontrol.business.BrowseEventOperate;
 import cn.yunshi.groupcontrol.business.CommentEventOperate;
+import cn.yunshi.groupcontrol.business.ForwardEventOperate;
 import cn.yunshi.groupcontrol.business.SupportEventOperate;
 import cn.yunshi.groupcontrol.common.BasicResult;
 import cn.yunshi.groupcontrol.common.Constant;
@@ -65,6 +66,8 @@ public class GroupWebServiceImpl extends ServiceImpl<GroupTaskDao, GroupTaskEnti
     private CommentEventOperate commentEventOperate;
     @Autowired
     private BrowseEventOperate browseEventOperate;
+    @Autowired
+    private ForwardEventOperate forwardEventOperate;
 
 
     @Override
@@ -144,6 +147,16 @@ public class GroupWebServiceImpl extends ServiceImpl<GroupTaskDao, GroupTaskEnti
 
                 CompletableFuture.runAsync(() -> {
                     browseEventOperate.reportFlow(taskId, androidIds, taskBo, scriptService);
+                    cdl.countDown();
+                }, threadPoolExecutor);
+            }
+        }
+        if (null != taskBo.getForwardVo()) {
+            int nums = Optional.ofNullable(taskBo.getForwardVo().getNums()).orElse(0);
+            for (int forward = 0; forward < nums; forward++) {
+
+                CompletableFuture.runAsync(() -> {
+                    forwardEventOperate.reportFlow(taskId, androidIds, taskBo, scriptService);
                     cdl.countDown();
                 }, threadPoolExecutor);
             }

@@ -1,4 +1,4 @@
-package cn.yunshi.groupcontrol.vo;
+package cn.yunshi.groupcontrol.vo.event;
 
 import cn.yunshi.groupcontrol.enums.ControlTypeEnum;
 import lombok.Getter;
