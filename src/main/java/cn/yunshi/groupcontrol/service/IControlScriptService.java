@@ -12,6 +12,11 @@ public interface IControlScriptService {
     List<String> getAndroidIds();
 
     /**
+     * 打开app，并找到视频
+     */
+    boolean openAppFindVideo(String androidId, String contentUrl) throws InterruptedException;
+
+    /**
      * 点赞逻辑
      */
     boolean support(String androidId, String contentUrl) throws InterruptedException;

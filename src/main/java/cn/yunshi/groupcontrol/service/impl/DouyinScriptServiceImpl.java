@@ -17,9 +17,7 @@ public class DouyinScriptServiceImpl extends BaseScriptService {
 
 
     @Override
-    public boolean support(String androidId, String contentUrl) throws InterruptedException {
-        long start = System.currentTimeMillis();
-
+    public boolean openAppFindVideo(String androidId, String contentUrl) throws InterruptedException {
         //1.点击home按钮到桌面
         if (!click(new ClickVo(androidId, 543, 2157))) {
             return false;
@@ -46,8 +44,17 @@ public class DouyinScriptServiceImpl extends BaseScriptService {
         if (!click(new ClickVo(androidId, 966, 114))) {
             return false;
         }
-        Thread.sleep(5000);
 
+        return true;
+    }
+
+    @Override
+    public boolean support(String androidId, String contentUrl) throws InterruptedException {
+        long start = System.currentTimeMillis();
+
+        this.openAppFindVideo(androidId, contentUrl);
+
+        Thread.sleep(5000);
         //6.点赞按钮
         if (!click(new ClickVo(androidId, 999, 1131))) {
             return false;
@@ -65,32 +72,8 @@ public class DouyinScriptServiceImpl extends BaseScriptService {
     public boolean comment(String androidId, String contentUrl, String commentText) throws InterruptedException {
         long start = System.currentTimeMillis();
 
-        //1.点击home按钮到桌面
-        if (!click(new ClickVo(androidId, 543, 2157))) {
-            return false;
-        }
+        this.openAppFindVideo(androidId, contentUrl);
 
-        Thread.sleep(2000);
-
-        //2.点击抖音坐标
-        if (!click(new ClickVo(androidId, 141, 267))) {
-            return false;
-        }
-        Thread.sleep(2000);
-        //3.点击右上角搜索按钮，弹出搜索框
-        if (!click(new ClickVo(androidId, 1011, 117))) {
-            return false;
-        }
-        Thread.sleep(2000);
-        //4.将url复制到搜索框中
-        if (!copy(new CopyVo(androidId, contentUrl))) {
-            return false;
-        }
-        Thread.sleep(2000);
-        //5.并点击搜索
-        if (!click(new ClickVo(androidId, 966, 114))) {
-            return false;
-        }
         Thread.sleep(5000);
         //6.点击评论按钮
         if (!click(new ClickVo(androidId, 1002, 1305))) {
@@ -125,34 +108,9 @@ public class DouyinScriptServiceImpl extends BaseScriptService {
     public boolean browse(String androidId, String contentUrl, Integer browseTime) throws InterruptedException {
         long start = System.currentTimeMillis();
 
-        //1.点击home按钮到桌面
-        if (!click(new ClickVo(androidId, 543, 2157))) {
-            return false;
-        }
+        this.openAppFindVideo(androidId, contentUrl);
 
-        Thread.sleep(2000);
-
-        //2.点击抖音坐标
-        if (!click(new ClickVo(androidId, 141, 267))) {
-            return false;
-        }
-        Thread.sleep(2000);
-        //3.点击右上角搜索按钮，弹出搜索框
-        if (!click(new ClickVo(androidId, 1011, 117))) {
-            return false;
-        }
-        Thread.sleep(2000);
-        //4.将url复制到搜索框中
-        if (!copy(new CopyVo(androidId, contentUrl))) {
-            return false;
-        }
-        Thread.sleep(2000);
-        //5.并点击搜索
-        if (!click(new ClickVo(androidId, 966, 114))) {
-            return false;
-        }
         Thread.sleep(browseTime * 1000);
-
 
         //6.播放完成之后点击屏幕任意一处 暂停视频 判断任务完成
         if (!click(new ClickVo(androidId, 453, 66))) {
