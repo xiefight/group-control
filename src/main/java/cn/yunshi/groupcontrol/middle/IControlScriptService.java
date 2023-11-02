@@ -1,4 +1,4 @@
-package cn.yunshi.groupcontrol.service;
+package cn.yunshi.groupcontrol.middle;
 
 import java.util.List;
 

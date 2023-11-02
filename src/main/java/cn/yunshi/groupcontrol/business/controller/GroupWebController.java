@@ -1,10 +1,10 @@
-package cn.yunshi.groupcontrol.controller;
+package cn.yunshi.groupcontrol.business.controller;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.yunshi.groupcontrol.bo.UserBo;
+import cn.yunshi.groupcontrol.middle.IControlScriptService;
+import cn.yunshi.groupcontrol.business.service.IGroupWebService;
 import cn.yunshi.groupcontrol.common.Response;
-import cn.yunshi.groupcontrol.service.IControlScriptService;
-import cn.yunshi.groupcontrol.service.IGroupWebService;
 import cn.yunshi.groupcontrol.util.JsonParameterUtil;
 import cn.yunshi.groupcontrol.vo.GroupTaskReqVo;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package cn.yunshi.groupcontrol.service;
+package cn.yunshi.groupcontrol.business.service;
 
 import cn.yunshi.groupcontrol.common.Response;
 import cn.yunshi.groupcontrol.exception.InputErrorException;

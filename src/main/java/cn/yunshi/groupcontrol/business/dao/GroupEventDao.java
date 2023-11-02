@@ -1,4 +1,4 @@
-package cn.yunshi.groupcontrol.dao;
+package cn.yunshi.groupcontrol.business.dao;
 
 import cn.yunshi.groupcontrol.entity.GroupEventEntity;
 import cn.yunshi.groupcontrol.entity.GroupTaskEntity;

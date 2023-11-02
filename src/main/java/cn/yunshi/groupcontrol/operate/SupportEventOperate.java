@@ -1,15 +1,15 @@
-package cn.yunshi.groupcontrol.business;
+package cn.yunshi.groupcontrol.operate;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.crypto.digest.MD5;
 import cn.yunshi.groupcontrol.bo.TaskBo;
+import cn.yunshi.groupcontrol.business.dao.GroupEventDao;
+import cn.yunshi.groupcontrol.business.dao.SupportRecordDao;
+import cn.yunshi.groupcontrol.middle.IControlScriptService;
 import cn.yunshi.groupcontrol.common.GroupTaskStatus;
-import cn.yunshi.groupcontrol.dao.GroupEventDao;
-import cn.yunshi.groupcontrol.dao.SupportRecordDao;
 import cn.yunshi.groupcontrol.entity.GroupEventEntity;
 import cn.yunshi.groupcontrol.entity.SupportRecordEntity;
 import cn.yunshi.groupcontrol.enums.ControlTypeEnum;
-import cn.yunshi.groupcontrol.service.IControlScriptService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,8 +98,9 @@ public class SupportEventOperate extends BaseOperate {
 
     /**
      * 点赞事件剔除已点过赞的设备
+     * <p>
+     * //     * @param contentUrl 点赞的视频url
      *
-//     * @param contentUrl 点赞的视频url
      * @param androidIds 设备集合
      * @return 可以点赞的设备id
      */
