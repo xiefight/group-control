@@ -3,23 +3,22 @@ package cn.yunshi.groupcontrol.business.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.yunshi.groupcontrol.bo.TaskBo;
-import cn.yunshi.groupcontrol.middle.impl.DouyinScriptServiceImpl;
-import cn.yunshi.groupcontrol.middle.impl.WeixinVideoScriptServiceImpl;
-import cn.yunshi.groupcontrol.operate.BrowseEventOperate;
-import cn.yunshi.groupcontrol.operate.CommentEventOperate;
-import cn.yunshi.groupcontrol.operate.ForwardEventOperate;
-import cn.yunshi.groupcontrol.operate.SupportEventOperate;
-import cn.yunshi.groupcontrol.middle.IControlScriptService;
+import cn.yunshi.groupcontrol.business.dao.GroupEventDao;
+import cn.yunshi.groupcontrol.business.dao.GroupTaskDao;
 import cn.yunshi.groupcontrol.business.service.IGroupWebService;
 import cn.yunshi.groupcontrol.common.BasicResult;
 import cn.yunshi.groupcontrol.common.Constant;
 import cn.yunshi.groupcontrol.common.GroupTaskStatus;
 import cn.yunshi.groupcontrol.common.Response;
-import cn.yunshi.groupcontrol.business.dao.GroupEventDao;
-import cn.yunshi.groupcontrol.business.dao.GroupTaskDao;
 import cn.yunshi.groupcontrol.entity.GroupEventEntity;
 import cn.yunshi.groupcontrol.entity.GroupTaskEntity;
 import cn.yunshi.groupcontrol.exception.InputErrorException;
+import cn.yunshi.groupcontrol.middle.IControlScriptService;
+import cn.yunshi.groupcontrol.middle.factory.PlatformBeanFactory;
+import cn.yunshi.groupcontrol.operate.BrowseEventOperate;
+import cn.yunshi.groupcontrol.operate.CommentEventOperate;
+import cn.yunshi.groupcontrol.operate.ForwardEventOperate;
+import cn.yunshi.groupcontrol.operate.SupportEventOperate;
 import cn.yunshi.groupcontrol.util.DateUtil;
 import cn.yunshi.groupcontrol.util.PageUtils;
 import cn.yunshi.groupcontrol.util.Query;
@@ -30,7 +29,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -54,12 +52,7 @@ public class GroupWebServiceImpl extends ServiceImpl<GroupTaskDao, GroupTaskEnti
     private GroupEventDao groupEventDao;
 
     @Autowired
-    @Qualifier("douyinScriptService")
-    private DouyinScriptServiceImpl douyinScriptService;
-
-    @Autowired
-    @Qualifier("weixinScriptService")
-    private WeixinVideoScriptServiceImpl weixinScriptService;
+    private PlatformBeanFactory platformBeanFactory;
 
 
     @Autowired
@@ -86,11 +79,7 @@ public class GroupWebServiceImpl extends ServiceImpl<GroupTaskDao, GroupTaskEnti
             }
         }
 
-        IControlScriptService scriptService = weixinScriptService;
-        if (Constant.PlatForm.DOUYIN.equals(taskBo.getPlatform())) {
-            scriptService = douyinScriptService;
-        }
-        //3.获取空闲设备，给设备加锁，可以使用redis
+        IControlScriptService scriptService = platformBeanFactory.findPlatformBean(taskBo.getPlatform());
         List<String> androidIds = scriptService.getAndroidIds();
         int eventSums = taskBo.getEventSums();
 

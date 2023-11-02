@@ -9,6 +9,9 @@ import java.util.List;
  **/
 public interface IControlScriptService {
 
+    /**
+     * 获取可使用的设备集合
+     */
     List<String> getAndroidIds();
 
     /**
