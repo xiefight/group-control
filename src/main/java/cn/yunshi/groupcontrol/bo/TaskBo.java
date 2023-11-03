@@ -22,7 +22,7 @@ public class TaskBo {
     //群控内容url
     private String contentUrl;
     //微信视频号搜索方式 1：视频链接 默认方式  2：视频号名字全称
-    private String searchMethod;
+//    private String searchMethod;
     //评论事件
     private CommentVo commentVo;
     //点赞事件

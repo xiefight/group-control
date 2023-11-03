@@ -2,7 +2,8 @@ package cn.yunshi.groupcontrol.middle.factory;
 
 import cn.yunshi.groupcontrol.middle.IControlScriptService;
 import cn.yunshi.groupcontrol.middle.impl.DouyinScriptServiceImpl;
-import cn.yunshi.groupcontrol.middle.impl.WeixinVideoScriptServiceImpl;
+import cn.yunshi.groupcontrol.middle.impl.WeixinVideoLinkScriptServiceImpl;
+import cn.yunshi.groupcontrol.middle.impl.WeixinVideoNameScriptServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
@@ -24,14 +25,19 @@ public class PlatformBeanConfig {
     private DouyinScriptServiceImpl douyinScriptService;
 
     @Autowired
-    @Qualifier("weixinScriptService")
-    private WeixinVideoScriptServiceImpl weixinScriptService;
+    @Qualifier("weixinLinkService")
+    private WeixinVideoLinkScriptServiceImpl weixinLinkService;
+
+    @Autowired
+    @Qualifier("weixinNameService")
+    private WeixinVideoNameScriptServiceImpl weixinNameService;
 
 
     @PostConstruct
-    public void init(){
-        platformBeanMap.put("douyin",douyinScriptService);
-        platformBeanMap.put("weixin",weixinScriptService);
+    public void init() {
+        platformBeanMap.put("douyin", douyinScriptService);
+        platformBeanMap.put("weixinLink", weixinLinkService);
+        platformBeanMap.put("weixinName", weixinNameService);
 
     }
 

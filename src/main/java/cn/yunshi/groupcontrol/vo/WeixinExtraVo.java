@@ -12,5 +12,5 @@ public class WeixinExtraVo {
     //视频号的名称
     private String weixinVideoName;
     //视频序列号--不填默认第一条视频
-    private Integer weixinVideoSort;
+    private Integer weixinVideoNameSort;
 }
