@@ -52,15 +52,6 @@ public class GroupEventEntity {
      */
     private Integer browseTime;
 
-    /**
-     * 视频号-名字全称
-     */
-    private String weixinVideoName;
-
-    /**
-     * 视频号-视频序号
-     */
-    private Integer weixinVideoNameSort;
 
     /**
      * 转发人名称

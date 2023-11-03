@@ -1,5 +1,6 @@
 package cn.yunshi.groupcontrol.middle.impl;
 
+import cn.yunshi.groupcontrol.entity.GroupTaskEntity;
 import cn.yunshi.groupcontrol.middle.BaseScriptService;
 import cn.yunshi.groupcontrol.vo.action.ClickVo;
 import cn.yunshi.groupcontrol.vo.action.CopyVo;
@@ -17,7 +18,7 @@ public class DouyinScriptServiceImpl extends BaseScriptService {
 
 
     @Override
-    public boolean openAppFindVideo(String androidId, String contentUrl) throws InterruptedException {
+    public boolean openAppFindVideo(String androidId, String contentUrl, GroupTaskEntity groupTaskEntity) throws InterruptedException {
         //1.点击home按钮到桌面
         if (!click(new ClickVo(androidId, 543, 2157))) {
             return false;
@@ -45,6 +46,8 @@ public class DouyinScriptServiceImpl extends BaseScriptService {
             return false;
         }
 
+        Thread.sleep(5000);
+
         return true;
     }
 
@@ -52,9 +55,6 @@ public class DouyinScriptServiceImpl extends BaseScriptService {
     public boolean support(String androidId, String contentUrl) throws InterruptedException {
         long start = System.currentTimeMillis();
 
-        this.openAppFindVideo(androidId, contentUrl);
-
-        Thread.sleep(5000);
         //6.点赞按钮
         if (!click(new ClickVo(androidId, 999, 1131))) {
             return false;
@@ -75,9 +75,6 @@ public class DouyinScriptServiceImpl extends BaseScriptService {
     public boolean comment(String androidId, String contentUrl, String commentText) throws InterruptedException {
         long start = System.currentTimeMillis();
 
-        this.openAppFindVideo(androidId, contentUrl);
-
-        Thread.sleep(5000);
         //6.点击评论按钮
         if (!click(new ClickVo(androidId, 1002, 1305))) {
             return false;
@@ -113,14 +110,12 @@ public class DouyinScriptServiceImpl extends BaseScriptService {
     public boolean browse(String androidId, String contentUrl, Integer browseTime) throws InterruptedException {
         long start = System.currentTimeMillis();
 
-        this.openAppFindVideo(androidId, contentUrl);
-
-        Thread.sleep(browseTime * 1000);
-
         //6.播放完成之后点击屏幕任意一处 暂停视频 判断任务完成
         if (!click(new ClickVo(androidId, 453, 66))) {
             return false;
         }
+
+        Thread.sleep(browseTime * 1000);
 
         back(androidId);
 
@@ -132,9 +127,6 @@ public class DouyinScriptServiceImpl extends BaseScriptService {
     @Override
     public boolean forward(String androidId, String contentUrl, String forwardFriendName) throws InterruptedException {
         long start = System.currentTimeMillis();
-
-        this.openAppFindVideo(androidId, contentUrl);
-        Thread.sleep(5000);
 
         //点击转发图标按钮
         if (!click(new ClickVo(androidId, 1002, 1500))) {

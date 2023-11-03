@@ -1,5 +1,7 @@
 package cn.yunshi.groupcontrol.middle;
 
+import cn.yunshi.groupcontrol.entity.GroupTaskEntity;
+
 import java.util.List;
 
 /**
@@ -17,7 +19,7 @@ public interface IControlScriptService {
     /**
      * 打开app，并找到视频
      */
-    boolean openAppFindVideo(String androidId, String contentUrl) throws InterruptedException;
+    boolean openAppFindVideo(String androidId, String contentUrl, GroupTaskEntity groupTaskEntity) throws InterruptedException;
 
     /**
      * 点赞逻辑

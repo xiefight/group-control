@@ -99,6 +99,11 @@ public class GroupWebServiceImpl extends ServiceImpl<GroupTaskDao, GroupTaskEnti
         groupTaskEntity.setUserId("1001");
         groupTaskEntity.setUserName("test");
         groupTaskEntity.setErrMsg(CollUtil.isEmpty(androidIds) ? "无可用设备" : "");
+        if (!Objects.isNull(taskBo.getWeixinExtraVo())) {
+            groupTaskEntity.setWeixinVideoName(taskBo.getWeixinExtraVo().getWeixinVideoName());
+            groupTaskEntity.setWeixinVideoNameSort(taskBo.getWeixinExtraVo().getWeixinVideoNameSort());
+        }
+
         this.baseMapper.insert(groupTaskEntity);
         Integer taskId = groupTaskEntity.getId();
 

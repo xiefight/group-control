@@ -62,6 +62,16 @@ public class GroupTaskEntity {
     //失败原因
     private String errMsg;
 
+    /**
+     * 视频号-公众号全称
+     */
+    private String weixinVideoName;
+
+    /**
+     * 视频号-视频序号
+     */
+    private Integer weixinVideoNameSort;
+
     //关联的事件集合
     @TableField(exist = false)
     private GroupEventRespVo eventRespVo;

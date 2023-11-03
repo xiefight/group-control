@@ -2,6 +2,7 @@ package cn.yunshi.groupcontrol.operate;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.yunshi.groupcontrol.bo.TaskBo;
+import cn.yunshi.groupcontrol.business.dao.GroupTaskDao;
 import cn.yunshi.groupcontrol.middle.IControlScriptService;
 import cn.yunshi.groupcontrol.common.GroupTaskStatus;
 import cn.yunshi.groupcontrol.business.dao.GroupEventDao;
@@ -24,6 +25,8 @@ public abstract class BaseOperate {
     @Autowired
     protected CommonUtil commonUtil;
     @Autowired
+    private GroupTaskDao groupTaskDao;
+    @Autowired
     private GroupEventDao groupEventDao;
 
     public void reportFlow(Integer taskId, List<String> androidIds,
@@ -44,9 +47,16 @@ public abstract class BaseOperate {
             updateEvent(groupEventEntity, "", false, "无可用设备");
             return;
         }
-        //3.执行事件
+        //3.查找视频
+        try {
+            scriptService.openAppFindVideo(androidId, contentUrlMap.get(), groupTaskDao.selectById(taskId));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            //todo 查找视频失败 更新事件状态
+        }
+        //4.执行事件
         boolean eventRes = executeEvent(scriptService, groupEventEntity, androidId);
-        //4.更新事件状态
+        //5.更新事件状态
         updateEvent(groupEventEntity, androidId, eventRes, "");
     }
 

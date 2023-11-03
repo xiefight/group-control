@@ -15,10 +15,6 @@ public abstract class BaseWeixinVideoScriptService extends BaseScriptService {
     public boolean support(String androidId, String contentUrl) throws InterruptedException {
         long start = System.currentTimeMillis();
 
-        this.openAppFindVideo(androidId, contentUrl);
-
-        Thread.sleep(5000);
-
         //9.点赞
         if (!click(new ClickVo(androidId, 636, 1947))) {
             return false;
@@ -39,10 +35,6 @@ public abstract class BaseWeixinVideoScriptService extends BaseScriptService {
     @Override
     public boolean comment(String androidId, String contentUrl, String commentText) throws InterruptedException {
         long start = System.currentTimeMillis();
-
-        this.openAppFindVideo(androidId, contentUrl);
-
-        Thread.sleep(5000);
 
         //9.打开评论
         if (!click(new ClickVo(androidId, 1005, 1935))) {
@@ -83,6 +75,7 @@ public abstract class BaseWeixinVideoScriptService extends BaseScriptService {
         System.out.println("13.关闭评论弹窗");
         Thread.sleep(2000);
 
+
         clear(androidId);
 
         back(androidId);
@@ -95,10 +88,7 @@ public abstract class BaseWeixinVideoScriptService extends BaseScriptService {
     public boolean browse(String androidId, String contentUrl, Integer browseTime) throws InterruptedException {
         long start = System.currentTimeMillis();
 
-        this.openAppFindVideo(androidId, contentUrl);
-
         Thread.sleep(browseTime * 1000);
-
         clear(androidId);
 
         back(androidId);
@@ -111,10 +101,6 @@ public abstract class BaseWeixinVideoScriptService extends BaseScriptService {
     public boolean forward(String androidId, String contentUrl, String forwardFriendName) throws InterruptedException {
 
         long start = System.currentTimeMillis();
-
-        this.openAppFindVideo(androidId, contentUrl);
-
-        Thread.sleep(5000);
 
         //点击-转发图标
         if (!click(new ClickVo(androidId, 744, 1926))) {
@@ -154,9 +140,13 @@ public abstract class BaseWeixinVideoScriptService extends BaseScriptService {
 
         //todo 返回等操作  待完善
 
+        clear(androidId);
+
         back(androidId);
 
-        return false;
+        System.out.println(androidId + " 花费时间：" + (System.currentTimeMillis() - start));
+
+        return true;
     }
 
 

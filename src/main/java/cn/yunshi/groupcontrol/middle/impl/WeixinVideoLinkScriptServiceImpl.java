@@ -1,5 +1,6 @@
 package cn.yunshi.groupcontrol.middle.impl;
 
+import cn.yunshi.groupcontrol.entity.GroupTaskEntity;
 import cn.yunshi.groupcontrol.vo.action.ClickVo;
 import cn.yunshi.groupcontrol.vo.action.CopyVo;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class WeixinVideoLinkScriptServiceImpl extends BaseWeixinVideoScriptService {
 
     @Override
-    public boolean openAppFindVideo(String androidId, String contentUrl) throws InterruptedException {
+    public boolean openAppFindVideo(String androidId, String contentUrl, GroupTaskEntity groupTaskEntity) throws InterruptedException {
 
         //1.点击home按钮到桌面
         if (!click(new ClickVo(androidId, 543, 2157))) {
@@ -77,6 +78,8 @@ public class WeixinVideoLinkScriptServiceImpl extends BaseWeixinVideoScriptServi
         }
         System.out.println("8.打开链接");
 
+        Thread.sleep(5000);
+
         return true;
     }
 
@@ -107,6 +110,11 @@ public class WeixinVideoLinkScriptServiceImpl extends BaseWeixinVideoScriptServi
      * @throws InterruptedException
      */
     public void clear(String androidId) throws InterruptedException {
+
+        //先返回到文件传输助手的页面，再执行清除操作
+        click(new ClickVo(androidId, 51, 123));
+        Thread.sleep(2000);
+
         //1.点击文件传输助手对话框右上角...
         click(new ClickVo(androidId, 1005, 126));
         Thread.sleep(2000);

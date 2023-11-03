@@ -2,10 +2,10 @@ package cn.yunshi.groupcontrol.operate;
 
 import cn.yunshi.groupcontrol.bo.TaskBo;
 import cn.yunshi.groupcontrol.business.dao.GroupEventDao;
-import cn.yunshi.groupcontrol.middle.IControlScriptService;
 import cn.yunshi.groupcontrol.common.GroupTaskStatus;
 import cn.yunshi.groupcontrol.entity.GroupEventEntity;
 import cn.yunshi.groupcontrol.enums.ControlTypeEnum;
+import cn.yunshi.groupcontrol.middle.IControlScriptService;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,6 +22,7 @@ public class ForwardEventOperate extends BaseOperate {
         //构建事件基础信息
         GroupEventEntity groupEventEntity = new GroupEventEntity();
         groupEventEntity.setEventType(ControlTypeEnum.FORWARD.getCode());
+        groupEventEntity.setForwardFriendName(taskBo.getForwardVo().getFriendName());
         //状态执行中
         groupEventEntity.setStatus(GroupTaskStatus.EXECUTE.getCode());
         groupEventEntity.setTaskId(taskId);

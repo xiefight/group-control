@@ -1,7 +1,9 @@
 package cn.yunshi.groupcontrol.middle.impl;
 
+import cn.yunshi.groupcontrol.entity.GroupTaskEntity;
 import cn.yunshi.groupcontrol.vo.action.ClickVo;
 import cn.yunshi.groupcontrol.vo.action.CopyVo;
+import cn.yunshi.groupcontrol.vo.action.SwipeVo;
 import org.springframework.stereotype.Service;
 
 /**
@@ -11,7 +13,7 @@ import org.springframework.stereotype.Service;
 public class WeixinVideoNameScriptServiceImpl extends BaseWeixinVideoScriptService {
 
     @Override
-    public boolean openAppFindVideo(String androidId, String contentUrl) throws InterruptedException {
+    public boolean openAppFindVideo(String androidId, String contentUrl, GroupTaskEntity groupTaskEntity) throws InterruptedException {
 
         //1.点击home按钮到桌面
         if (!click(new ClickVo(androidId, 543, 2157))) {
@@ -26,74 +28,89 @@ public class WeixinVideoNameScriptServiceImpl extends BaseWeixinVideoScriptServi
         }
         System.out.println("2.点击微信坐标-打开微信");
         Thread.sleep(2000);
-        //3.点击搜索放大镜
-        if (!click(new ClickVo(androidId, 906, 117))) {
+        //3.点击微信坐标-点击发现
+        if (!click(new ClickVo(androidId, 675, 1998))) {
             return false;
         }
-        System.out.println("3.点击搜索放大镜");
+        System.out.println("3.点击微信坐标-点击发现");
         Thread.sleep(2000);
 
-        //4.搜索框输入文件传输工具
-        if (!copy(new CopyVo(androidId, "文件传输"))) {
+        //4.点击-视频号
+        if (!click(new ClickVo(androidId, 168, 372))) {
             return false;
         }
-        System.out.println("4.搜索框输入文件传输工具");
+        System.out.println("4.点击-视频号");
         Thread.sleep(2000);
 
-        //5.点击-文件传输工具快捷入口
-        if (!click(new ClickVo(androidId, 102, 441))) {
+        //5.点击-搜索框
+        if (!click(new ClickVo(androidId, 906, 123))) {
             return false;
         }
-        System.out.println("5.点击-文件传输工具快捷入口");
+        System.out.println("5.点击-搜索框");
+        Thread.sleep(3000);
+
+        //6.输入要搜索的视频号的名称（名称后台输入配置）
+        if (!copy(new CopyVo(androidId, groupTaskEntity.getWeixinVideoName()))) {
+            return false;
+        }
+        System.out.println("6.输入要搜索的视频号的名称（名称后台输入配置）");
+        Thread.sleep(3000);
+
+        //7.点击搜索按钮
+        if (!click(new ClickVo(androidId, 960, 117))) {
+            return false;
+        }
+        System.out.println("7.点击搜索按钮");
+        Thread.sleep(2000);
+
+        //8.点击-搜索出来的列表项
+        if (!click(new ClickVo(androidId, 240, 474))) {
+            return false;
+        }
+        System.out.println("8.点击-搜索出来的列表项");
         Thread.sleep(5000);
 
-        //点击输入框
-        if (!click(new ClickVo(androidId, 171, 2013))) {
+        //9.点击-第一条视频进入滑动列表
+        if (!click(new ClickVo(androidId, 200, 1167))) {
             return false;
         }
-        System.out.println("5.点击输入框");
+        System.out.println("9.点击-第一条视频进入滑动列表");
         Thread.sleep(2000);
-
-        //6.搜索框输入视频链接文案
-        if (!copy(new CopyVo(androidId, ""))) {
-            return false;
+        //10.开始滑动，找到相关视频
+        for (int i = 0; i < groupTaskEntity.getWeixinVideoNameSort() - 1; i++) {
+            swipeUp(new SwipeVo(androidId));
+            Thread.sleep(2000);
         }
-        if (!copy(new CopyVo(androidId, "\\\n\\\n\\\n\\\n\\\n\\\n\\\n\\\n\\\n\\\n\\\n\\\n\\\n\\\n\\\n\\\n\\\n\\\n\\\n\\\n\\\n\\\n\\\n\\\n\\\n\\\n\\\n\\\n\\\n" + contentUrl))) {
-            return false;
-        }
-        System.out.println("6.搜索框输入视频链接文案");
-        Thread.sleep(2000);
-
-        //7.点击发送链接
-        if (!click(new ClickVo(androidId, 987, 1962))) {
-            return false;
-        }
-        System.out.println("7.点击发送链接");
-        Thread.sleep(2000);
-
-        //8.打开链接
-        if (!click(new ClickVo(androidId, 357, 1824))) {
-            return false;
-        }
-        System.out.println("8.打开链接");
+        System.out.println("10.开始滑动，找到相关视频");
+        Thread.sleep(5000);
 
         return true;
     }
 
     public boolean back(String androidId) throws InterruptedException {
         //14.返回
-        if (!click(new ClickVo(androidId, 51, 123))) {
+        if (!click(new ClickVo(androidId, 63, 126))) {
             return false;
         }
         System.out.println("14.返回");
-        Thread.sleep(4000);
+        Thread.sleep(3000);
         //15.返回
-        if (!click(new ClickVo(androidId, 51, 123))) {
+        if (!click(new ClickVo(androidId, 63, 126))) {
             return false;
         }
-        Thread.sleep(2000);
+        Thread.sleep(3000);
         //16.点取消-返回
-        if (!click(new ClickVo(androidId, 1011, 123))) {
+        if (!click(new ClickVo(androidId, 63, 126))) {
+            return false;
+        }
+        Thread.sleep(3000);
+        //16.点取消-返回
+        if (!click(new ClickVo(androidId, 63, 126))) {
+            return false;
+        }
+        Thread.sleep(3000);
+        //16.点取消-返回
+        if (!click(new ClickVo(androidId, 63, 126))) {
             return false;
         }
         return true;
@@ -107,17 +124,6 @@ public class WeixinVideoNameScriptServiceImpl extends BaseWeixinVideoScriptServi
      * @throws InterruptedException
      */
     public void clear(String androidId) throws InterruptedException {
-        //1.点击文件传输助手对话框右上角...
-        click(new ClickVo(androidId, 1005, 126));
-        Thread.sleep(2000);
-
-        //2.点击清空聊天记录
-        click(new ClickVo(androidId, 525, 1188));
-        Thread.sleep(2000);
-
-        //3.点击-弹窗清空选项
-        click(new ClickVo(androidId, 738, 1167));
-        Thread.sleep(2000);
     }
 
 
