@@ -154,6 +154,11 @@ public class DouyinScriptServiceImpl extends BaseScriptService {
         return true;
     }
 
+    @Override
+    public boolean wxFire(String androidId, String contentUrl) {
+        return false;
+    }
+
 
     /**
      * 返回

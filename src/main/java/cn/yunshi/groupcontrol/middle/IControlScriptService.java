@@ -43,6 +43,11 @@ public interface IControlScriptService {
      */
     boolean forward(String androidId, String contentUrl, String forwardFriendName) throws InterruptedException;
 
+    /**
+     * 点赞小火苗(微信视频号小火苗事件)
+     */
+    boolean wxFire(String androidId, String contentUrl) throws InterruptedException;
+
 
     /**
      * 踩逻辑

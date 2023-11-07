@@ -1,10 +1,7 @@
 package cn.yunshi.groupcontrol.bo;
 
 import cn.yunshi.groupcontrol.vo.WeixinExtraVo;
-import cn.yunshi.groupcontrol.vo.event.BrowseVo;
-import cn.yunshi.groupcontrol.vo.event.CommentVo;
-import cn.yunshi.groupcontrol.vo.event.ForwardVo;
-import cn.yunshi.groupcontrol.vo.event.SupportVo;
+import cn.yunshi.groupcontrol.vo.event.*;
 import lombok.Data;
 
 import java.util.Optional;
@@ -31,6 +28,8 @@ public class TaskBo {
     private BrowseVo browseVo;
     //转发事件
     private ForwardVo forwardVo;
+    //微信小火苗事件
+    private WxFireVo wxFireVo;
 
     //微信视频号-视频号名字全称-搜索视频 额外参数
     private WeixinExtraVo weixinExtraVo;
@@ -44,6 +43,7 @@ public class TaskBo {
         CommentVo commentVo = this.getCommentVo();
         BrowseVo browseVo = this.getBrowseVo();
         ForwardVo forwardVo = this.getForwardVo();
+        WxFireVo wxFireVo = this.getWxFireVo();
 
         if (supportVo != null) {
             sums += Optional.ofNullable(supportVo.getNums()).orElse(0);
@@ -56,6 +56,9 @@ public class TaskBo {
         }
         if (forwardVo != null) {
             sums += Optional.ofNullable(forwardVo.getNums()).orElse(0);
+        }
+        if (wxFireVo != null) {
+            sums += Optional.ofNullable(wxFireVo.getNums()).orElse(0);
         }
         return sums;
     }

@@ -12,6 +12,7 @@ public enum ControlTypeEnum {
     BROWSE(3,"浏览"),
     FORWARD(4,"转发"),
     DISLIKE(5,"踩"),
+    WXFIRE(6,"小火苗"),
 
     ;
 

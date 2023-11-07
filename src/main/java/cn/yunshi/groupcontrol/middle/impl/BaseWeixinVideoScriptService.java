@@ -149,6 +149,23 @@ public abstract class BaseWeixinVideoScriptService extends BaseScriptService {
         return true;
     }
 
+    @Override
+    public boolean wxFire(String androidId, String contentUrl) throws InterruptedException {
+        long start = System.currentTimeMillis();
+
+        //9.点赞
+        if (!click(new ClickVo(androidId, 636, 1947))) {
+            return false;
+        }
+        System.out.println("9.点赞小火苗");
+        Thread.sleep(4000);
+
+        clear(androidId);
+        back(androidId);
+
+        System.out.println("点赞小火苗  " + androidId + " 花费时间：" + (System.currentTimeMillis() - start));
+        return true;
+    }
 
     /**
      * 返回操作

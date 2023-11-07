@@ -165,6 +165,15 @@ public class GroupWebServiceImpl extends ServiceImpl<GroupTaskDao, GroupTaskEnti
                 }, threadPoolExecutor);
             }
         }
+        if (null != taskBo.getWxFireVo()) {
+            int nums = Optional.ofNullable(taskBo.getWxFireVo().getNums()).orElse(0);
+            for (int wxFire = 0; wxFire < nums; wxFire++) {
+                CompletableFuture.runAsync(() -> {
+                    supportEventOperate.reportFlow(taskId, androidIds, taskBo, scriptService);
+                    cdl.countDown();
+                }, threadPoolExecutor);
+            }
+        }
         cdl.await();
         System.out.println("所有事件执行完成");
         GroupTaskEntity update = new GroupTaskEntity();
