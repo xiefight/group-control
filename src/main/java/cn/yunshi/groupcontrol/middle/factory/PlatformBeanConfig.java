@@ -1,5 +1,6 @@
 package cn.yunshi.groupcontrol.middle.factory;
 
+import cn.yunshi.groupcontrol.common.Constant;
 import cn.yunshi.groupcontrol.middle.IControlScriptService;
 import cn.yunshi.groupcontrol.middle.impl.DouyinScriptServiceImpl;
 import cn.yunshi.groupcontrol.middle.impl.WeixinVideoLinkScriptServiceImpl;
@@ -35,9 +36,9 @@ public class PlatformBeanConfig {
 
     @PostConstruct
     public void init() {
-        platformBeanMap.put("douyin", douyinScriptService);
-        platformBeanMap.put("weixinLink", weixinLinkService);
-        platformBeanMap.put("weixinName", weixinNameService);
+        platformBeanMap.put(Constant.PlatForm.DOUYIN, douyinScriptService);
+        platformBeanMap.put(Constant.PlatForm.WEIXIN_LINK, weixinLinkService);
+        platformBeanMap.put(Constant.PlatForm.WEIXIN_NAME, weixinNameService);
 
     }
 

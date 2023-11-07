@@ -15,10 +15,7 @@ import cn.yunshi.groupcontrol.entity.GroupTaskEntity;
 import cn.yunshi.groupcontrol.exception.InputErrorException;
 import cn.yunshi.groupcontrol.middle.IControlScriptService;
 import cn.yunshi.groupcontrol.middle.factory.PlatformBeanFactory;
-import cn.yunshi.groupcontrol.operate.BrowseEventOperate;
-import cn.yunshi.groupcontrol.operate.CommentEventOperate;
-import cn.yunshi.groupcontrol.operate.ForwardEventOperate;
-import cn.yunshi.groupcontrol.operate.SupportEventOperate;
+import cn.yunshi.groupcontrol.operate.*;
 import cn.yunshi.groupcontrol.util.DateUtil;
 import cn.yunshi.groupcontrol.util.PageUtils;
 import cn.yunshi.groupcontrol.util.Query;
@@ -63,6 +60,8 @@ public class GroupWebServiceImpl extends ServiceImpl<GroupTaskDao, GroupTaskEnti
     private BrowseEventOperate browseEventOperate;
     @Autowired
     private ForwardEventOperate forwardEventOperate;
+    @Autowired
+    private WxFireEventOperate wxFireEventOperate;
 
 
     @Override
@@ -169,7 +168,7 @@ public class GroupWebServiceImpl extends ServiceImpl<GroupTaskDao, GroupTaskEnti
             int nums = Optional.ofNullable(taskBo.getWxFireVo().getNums()).orElse(0);
             for (int wxFire = 0; wxFire < nums; wxFire++) {
                 CompletableFuture.runAsync(() -> {
-                    supportEventOperate.reportFlow(taskId, androidIds, taskBo, scriptService);
+                    wxFireEventOperate.reportFlow(taskId, androidIds, taskBo, scriptService);
                     cdl.countDown();
                 }, threadPoolExecutor);
             }
@@ -191,7 +190,14 @@ public class GroupWebServiceImpl extends ServiceImpl<GroupTaskDao, GroupTaskEnti
 
         QueryWrapper<GroupTaskEntity> queryWrapper = new QueryWrapper<>();
         if (groupTaskReqVo.getPlatform() != null) {
-            queryWrapper.eq("platform", groupTaskReqVo.getPlatform());
+            if (groupTaskReqVo.getPlatform().equals(Constant.PlatForm.WEIXIN)) {
+                List<String> weixinPlatform = new ArrayList<>();
+                weixinPlatform.add(Constant.PlatForm.WEIXIN_LINK);
+                weixinPlatform.add(Constant.PlatForm.WEIXIN_NAME);
+                queryWrapper.in("platform", weixinPlatform);
+            }else {
+                queryWrapper.eq("platform", groupTaskReqVo.getPlatform());
+            }
         }
         if (groupTaskReqVo.getStatus() != null) {
             queryWrapper.eq("status", groupTaskReqVo.getStatus());

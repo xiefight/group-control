@@ -20,6 +20,8 @@ public class GroupEventRespVo {
     private EventExecuteInner browseEvent = new EventExecuteInner(ControlTypeEnum.BROWSE.getCode(), 0, 0, 0, 0);
     @Getter
     private EventExecuteInner forwardEvent = new EventExecuteInner(ControlTypeEnum.FORWARD.getCode(), 0, 0, 0, 0);
+    @Getter
+    private EventExecuteInner wxFireEvent = new EventExecuteInner(ControlTypeEnum.WXFIRE.getCode(), 0, 0, 0, 0);
 
 
     /**
@@ -48,6 +50,11 @@ public class GroupEventRespVo {
             EventExecuteInner forwardEvent = this.getForwardEvent();
             forwardEvent.setTotalNum();
             distributeStatus(eventEntity, forwardEvent);
+        }
+        if (ControlTypeEnum.WXFIRE.getCode() == eventType) {
+            EventExecuteInner wxFireEvent = this.getWxFireEvent();
+            wxFireEvent.setTotalNum();
+            distributeStatus(eventEntity, wxFireEvent);
         }
 
     }

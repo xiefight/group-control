@@ -9,6 +9,9 @@ public class Constant {
 
     public static class PlatForm {
         public static final String DOUYIN = "douyin";
+        public static final String WEIXIN = "weixin";
+        public static final String WEIXIN_LINK = "weixinLink";
+        public static final String WEIXIN_NAME = "weixinName";
     }
 
     public static class Page {

@@ -154,7 +154,7 @@ public abstract class BaseWeixinVideoScriptService extends BaseScriptService {
         long start = System.currentTimeMillis();
 
         //9.点赞
-        if (!click(new ClickVo(androidId, 636, 1947))) {
+        if (!click(new ClickVo(androidId, 882, 1941))) {
             return false;
         }
         System.out.println("9.点赞小火苗");
